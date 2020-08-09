@@ -11,3 +11,15 @@
 // validations types
 //  string, booleans, arrays [], integerrs, objects {'key':''value'}
 
+// swagger tools
+// 1. swagger editor: editor for oas with yaml.
+// 2. swagger ui
+// 3. swagger codegen: not covered in this  course
+
+// Other tools used in course
+// 1. node
+// 2.postman
+
+// Create new swagger project
+// npm install swagger -g
+// Command: swagger project create swagger1
