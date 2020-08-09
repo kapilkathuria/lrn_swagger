@@ -23,3 +23,8 @@
 // Create new swagger project
 // npm install swagger -g
 // Command: swagger project create swagger1
+// swagger instal yamljs swagger-ui-express
+
+// in package.json: change as follow - we don't want higher version of exprss-mw as 
+//  that has problem
+//  "swagger-express-mw": "0.1.0"
