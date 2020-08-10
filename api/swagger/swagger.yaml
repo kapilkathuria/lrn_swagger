@@ -18,40 +18,53 @@ consumes:
 produces:
   - application/json
 paths:
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
+  /recipes:
+    x-swagger-router-controller: recipe
     get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
-      responses:
+      description: Return all the recipes
+      operationId: getRecipes
+      responses: 
         "200":
-          description: Success
+          description: Sucess get all the recipes
           schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
+            type: array
+            items:
+              $ref: "#/definitions/Recipe"
+        "500":
+          description: Unexpected Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            type: object
+            properties:
+              message:
+                type: string
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
-  HelloWorldResponse:
-    required:
-      - message
+  Recipe:
     properties:
-      message:
+      id:
+        type: integer
+      isPublic:
+        type: boolean
+      name: 
         type: string
+      chef:
+        type: string
+        enum: [Joao, Charles]
+      stepList:
+        type: array
+        items:
+          type: string
+      ingredients:
+        type: array
+        items:
+          type: object
+          properties:
+            amount:
+              type: number
+            name:
+              type: string      
   ErrorResponse:
     required:
       - message

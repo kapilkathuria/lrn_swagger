@@ -13,3 +13,5 @@ const options = {
   };
 app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
 
+console.log("Serving at http://localhost:10010/api/")
+
