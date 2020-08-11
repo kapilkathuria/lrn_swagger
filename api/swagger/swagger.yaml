@@ -5,7 +5,7 @@ info:
 # during dev, should point to your local machine
 host: localhost:10010
 # basePath prefixes all resource paths 
-basePath: /
+basePath: /v1  
 # 
 schemes:
   # tip: remove http to make production-grade
@@ -17,6 +17,7 @@ consumes:
 # format of the responses to the client (Accepts)
 produces:
   - application/json
+  - text/plain
 paths:
   /recipes:
     x-swagger-router-controller: recipe
@@ -37,6 +38,159 @@ paths:
             properties:
               message:
                 type: string
+    post:
+      description: Create one new Recipe
+      operationId: postRecipes
+      parameters:
+        - in: body
+          name: body
+          description: The recipe to be added
+          required: true
+          schema:
+            $ref: "#/definitions/Recipe"
+      responses:
+        "204":
+          description: Sucess
+        "500":
+          description: unexpected Error
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+      
+  /recipes/{recipeId}:
+    x-swagger-router-controller: recipe
+    parameters:
+    - in: path
+      name: recipeId
+      type: integer
+      required: true
+      description: Numeric Id of the recipe
+    delete:
+      description: Remove a recipe
+      operationId: deleteRecipe
+      responses:
+        "204":
+          description: Success
+        "404":
+          description: The Id passed does not match any recipe.
+        "500":
+          description: unexpected Error
+          schema:
+            type: object
+            properties:
+                message:
+                    type: string
+    put:
+      parameters:
+      - in: body
+        name: Recipe
+        schema:
+          $ref: "#/definitions/Recipe"
+        required: true
+        description: Id of the recipe you want to get the comments.
+      description: updates a Recipe
+      operationId: putRecipes
+      responses:
+        "204":
+          description: Success
+        "404":
+          description: The Id passed does not match any recipe.
+        "500":
+          description: unexpected Error
+          schema:
+            type: object
+            properties:
+                message:
+                    type: string
+
+
+
+
+
+  /recipes/{recipeId}/comments:
+    x-swagger-router-controller: comments
+    parameters:
+    - in: path
+      name: recipeId
+      type: integer
+      required: true
+      description: Numeric Id of the recipe
+    get:
+      description: get all the comments
+      operationId: getComments
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Comment"
+        "404":
+          description: The Recipe Id is not a valid one.
+        "500":
+          description: unexpected Error
+          schema:
+            type: object
+            properties:
+                message:
+                    type: string
+              
+    post:
+      parameters:
+        - in: body
+          name: comment
+          schema:
+            $ref: "#/definitions/Comment"
+          required: true
+      operationId: postComments
+      responses:
+        "204":
+          description: Success
+        "404":
+          description: The Recipe Id is not a valid one.
+        "500":
+          description: unexpected Error
+          schema:
+            type: object
+            properties:
+                message:
+                    type: string
+                    
+  /recipes/{recipeId}/comments/{commentId}:
+    x-swagger-router-controller: comments
+    parameters:
+      - in: path
+        name: recipeId
+        type: integer
+        required: true
+        description: Id of the recipe you want to delete the comments.
+      - in: path
+        name: commentId
+        type: integer
+        required: true
+        description: Id of the comment which you want to delete.
+    delete:
+      description: deletes one comment
+      operationId: deleteComments
+      responses:
+        "204":
+          description: Success the comment is eliminated
+        "404":
+          description: The Recipe or the comment was not found.
+        "500":
+          description: unexpected Error
+          schema:
+            type: object
+            properties:
+                message:
+                    type: string 
+          
+    
+          
+   
+  
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
@@ -64,10 +218,18 @@ definitions:
             amount:
               type: number
             name:
-              type: string      
-  ErrorResponse:
-    required:
-      - message
+              type: string
+              
+  Comment:
     properties:
-      message:
+      id:
+        type: integer
+      recipeId:
+        type: integer
+      author:
         type: string
+      text:
+        type: string
+      date:
+        type: string
+
