@@ -206,7 +206,7 @@ definitions:
       chef:
         type: string
         enum: [Joao, Charles]
-      stepList:
+      steps:
         type: array
         items:
           type: string
