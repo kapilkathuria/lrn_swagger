@@ -18,12 +18,51 @@ consumes:
 produces:
   - application/json
   - text/plain
+
+# JWT Security definition
+securityDefinitions:
+  JWTAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+
 paths:
+  /login:
+    x-swagger-router-controller: auth
+    post:
+      summary: login to get jwt Token
+      description: login to get jwt Token
+      tags:
+        - authentication
+      operationId: login
+      parameters:
+      - name: body  
+        in: body
+        schema:
+          properties:
+            email:
+              type: string
+            password:
+              type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              token:
+                type: string
+        '400':
+          description: Invalid login
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
   /recipes:
     x-swagger-router-controller: recipe
     get:
       description: Return all the recipes
       operationId: getRecipes
+      security:
+      - JWTAuth: []
       responses: 
         "200":
           description: Sucess get all the recipes
@@ -185,14 +224,12 @@ paths:
             type: object
             properties:
                 message:
-                    type: string 
+                    type: string       
           
-    
-          
-   
-  
   /swagger:
     x-swagger-pipe: swagger_raw
+
+
 # complex objects have schema definitions
 definitions:
   Recipe:
@@ -232,4 +269,9 @@ definitions:
         type: string
       date:
         type: string
-
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string

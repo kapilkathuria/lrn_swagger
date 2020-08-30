@@ -8,7 +8,9 @@
   "license": "",
   "main": "app.js",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.12.3",
+    "jsonwebtoken": "^8.5.1",
     "swagger-express-mw": "0.1.0",
     "swagger-ui-express": "^4.1.4",
     "yamljs": "^0.3.0"
@@ -19,6 +21,8 @@
   },
   "scripts": {
     "start": "nodemon app.js",
+    "devstart": "nodemon app.js",
+    "serverstart": "DEBUG=swagger1:* npm run devstart",
     "test": "swagger project test"
   }
 }
